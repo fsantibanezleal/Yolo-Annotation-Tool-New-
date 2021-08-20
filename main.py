@@ -42,9 +42,9 @@ except IOError as io:
 COLORS = MAIN_COLORS#set(MAIN_COLORS)#, len(classes)
 print(classes)
 class LabelTool():
-    def __init__(self, args, master = None):
+    def __init__(self, master):
         # set up the main frame
-        self.img_type = args.img_type
+        self.img_type = 'jpg'
         
         self.curimg_h = 0
         self.curimg_w = 0
@@ -178,6 +178,8 @@ class LabelTool():
         # 
         print(type(widget))
 
+    def define_type_image(self,typeimg):
+        self.img_type = typeimg
     def select_text_or_select_and_copy_text(self,event):
         event.widget.select_range(0, 'end')
 
@@ -382,11 +384,14 @@ class LabelTool():
         return [int(xmin),int(ymin),int(xmax),int(ymax)]
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
     parser.add_argument('-img_type', default='jpg',type=str,
                         help='Image type: jpg or png')
     args = parser.parse_args()
     
     root = Tk()
-    tool = LabelTool(root,args)
+    tool = LabelTool(root)
+    tool.define_type_image(args.img_type)
+    
     root.resizable(width =  True, height = True)
     root.mainloop()
