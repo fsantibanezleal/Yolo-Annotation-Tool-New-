@@ -13,6 +13,7 @@ import sys
 import glob
 import random
 from os import getenv 
+import argparse
 
 if(sys.version_info[0] == 2):
     from Tkinter import *
@@ -41,8 +42,10 @@ except IOError as io:
 COLORS = MAIN_COLORS#set(MAIN_COLORS)#, len(classes)
 print(classes)
 class LabelTool():
-    def __init__(self, master):
+    def __init__(self, args, master = None):
         # set up the main frame
+        self.img_type = args.img_type
+        
         self.curimg_h = 0
         self.curimg_w = 0
         self.cur_cls_id = -1
@@ -379,7 +382,11 @@ class LabelTool():
         return [int(xmin),int(ymin),int(xmax),int(ymax)]
 
 if __name__ == '__main__':
+    parser.add_argument('-img_type', default='jpg',type=str,
+                        help='Image type: jpg or png')
+    args = parser.parse_args()
+    
     root = Tk()
-    tool = LabelTool(root)
+    tool = LabelTool(root,args)
     root.resizable(width =  True, height = True)
     root.mainloop()
